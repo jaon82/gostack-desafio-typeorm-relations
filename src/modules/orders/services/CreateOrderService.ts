@@ -42,9 +42,20 @@ class CreateOrderService {
     }
 
     const orderProducts = repositoryProducts.map(product => {
-      const quantity =
-        products.find(requestProduct => requestProduct.id === product.id)
-          ?.quantity || 0;
+      const productInList = products.find(
+        requestProduct => requestProduct.id === product.id,
+      );
+      const quantity = productInList?.quantity || 0;
+      if (quantity < 1) {
+        throw new AppError(
+          `Please inform a valid quantity to product (${product.name})`,
+        );
+      }
+      if (quantity > product.quantity) {
+        throw new AppError(
+          `Product (${product.name}) with insufficient quantity`,
+        );
+      }
       return {
         product_id: product.id,
         price: product.price,
