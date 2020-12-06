@@ -37,6 +37,10 @@ class CreateOrderService {
     const repositoryProducts = await this.productsRepository.findAllById(
       products,
     );
+    if (products.length !== repositoryProducts.length) {
+      throw new AppError('Some product of the list was not found');
+    }
+
     const orderProducts = repositoryProducts.map(product => {
       const quantity =
         products.find(requestProduct => requestProduct.id === product.id)
