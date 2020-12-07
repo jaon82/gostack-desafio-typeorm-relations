@@ -56,7 +56,7 @@ class ProductsRepository implements IProductsRepository {
       };
     });
 
-    this.ormRepository.save(updatedProducts);
+    await this.ormRepository.save(updatedProducts);
 
     return updatedProducts;
   }
